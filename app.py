@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 
 # Load the dataset
-df = pd.read_csv("../Datasets/Cars.csv")
+df = pd.read_csv("Cars.csv")
 
 # Set the Streamlit app title
 st.title("Car Brand Horsepower Visualizer")
