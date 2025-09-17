@@ -1,40 +1,36 @@
 import pandas as pd
-import seaborn as sns
+import seaborn as sb
 import matplotlib.pyplot as plt
 import streamlit as st
+
+# Title of the app
+st.title("Car Horsepower Viewer by Brand")
 
 # Load the dataset
 df = pd.read_csv("Cars.csv")
 
-# Set the Streamlit app title
-st.title("Car Brand Horsepower Visualizer")
+# Display unique car brands
+brands = sorted(df['Make'].dropna().unique())
 
-# Show raw data if checkbox is selected
-if st.checkbox("Show raw data"):
-    st.write(df)
+# Show the list of brands (optional)
+st.write("Available Brands:")
+st.write(brands)
 
-# Get unique car makes
-car_makes = sorted(df['Make'].dropna().unique())
+# Let the user select a brand
+selected_brand = st.selectbox("Enter Brand Name:", brands)
 
-# Dropdown menu to select car make
-selected_make = st.selectbox("Select a Car Brand", car_makes)
+# Filter the data based on the selected brand
+filtered_df = df[df['Make'] == selected_brand]
 
-# Filter dataframe based on selected make
-filtered_df = df[df['Make'] == selected_make]
+# Display filtered data
+st.write(f"Filtered data for **{selected_brand}**:")
+st.write(filtered_df)
 
-# Check if data is available for selected make
-if not filtered_df.empty:
-    st.write(f"Showing data for: **{selected_make}**")
-    st.write(filtered_df)
+# Plot bar chart
+fig, ax = plt.subplots(figsize=(8, 5))
+sb.barplot(x=filtered_df.Make, y=filtered_df.Horsepower, ax=ax)
+plt.xticks(rotation=90)
+ax.set_title(f"Horsepower for {selected_brand}")
 
-    # Create the plot
-    plt.figure(figsize=(10, 5))
-    sns.barplot(x=filtered_df['Make'], y=filtered_df['Horsepower'])
-
-    plt.title(f"Horsepower of {selected_make} Cars")
-    plt.xticks(rotation=90)
-
-    # Display the plot in Streamlit
-    st.pyplot(plt)
-else:
-    st.warning(f"No data available for '{selected_make}'")
+# Display the plot in Streamlit
+st.pyplot(fig)
