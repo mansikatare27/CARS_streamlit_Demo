@@ -7,7 +7,7 @@ st.title("Car Horsepower Viewer by Brand")
 
 # Load the dataset with error handling
 try:
-    df = pd.read_csv("Cars.csv")
+    df = pd.read_csv("CARS.csv")
 except FileNotFoundError:
     st.error("❌ Error: The file 'Cars.csv' was not found. Please make sure it is in the same folder as this script.")
     st.stop()
